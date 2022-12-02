@@ -6,20 +6,18 @@ using Android.Views;
 using AndroidX.AppCompat.Widget;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.FloatingActionButton;
-using Google.Android.Material.Snackbar;
-using Com.Facebook.React.Modules.Core;
-using Com.Facebook.React;
-using Com.Facebook.React.Common;
-using Com.Facebook.React.Shell;
+using Com.Spr.Messengerclient.Config;
+using Com.Spr.Messengerclient.Config.Bean;
+using Android.Content;
 
 namespace exampleRN
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity, IDefaultHardwareBackBtnHandler
+    public class MainActivity : AppCompatActivity
     {
-        ReactRootView mReactRootView;
+        //ReactRootView mReactRootView;
 
-        ReactInstanceManager mReactInstanceManager;
+        //ReactInstanceManager mReactInstanceManager;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -34,23 +32,30 @@ namespace exampleRN
             fab.Click += FabOnClick;
 
 
-            mReactRootView = new ReactRootView(this);
-            mReactInstanceManager = ReactInstanceManager.Builder()
-                    .SetApplication(Application)
-                    .SetCurrentActivity(this) // <== *** HERE ***
-                    .SetBundleAssetName("index.android.bundle")
-                    .SetJSMainModulePath("index")
-                    .AddPackage(new MainReactPackage())
-#if DEBUG
-                    .SetUseDeveloperSupport(false)
-#else
-                    .SetUseDeveloperSupport(false)
-#endif
-                    .SetInitialLifecycleState(LifecycleState.Resumed)
-            .Build();
-            mReactRootView.StartReactApplication(mReactInstanceManager, "MyReactNativeApp", null);
+            SPRMessenger sprMessenger = SPRMessenger.Shared();
+            SPRMessengerConfig config = new SPRMessengerConfig();
+            config.SetAppId("app_1000073145");
+            config.Environment = "PROD0";
+            Context context = Application.Context;
+            sprMessenger.TakeOff((Application)context, config);
 
-            SetContentView(mReactRootView);
+            //            mReactRootView = new ReactRootView(this);
+            //            mReactInstanceManager = ReactInstanceManager.Builder()
+            //                    .SetApplication(Application)
+            //                    .SetCurrentActivity(this) // <== *** HERE ***
+            //                    .SetBundleAssetName("index.android.bundle")
+            //                    .SetJSMainModulePath("index")
+            //                    .AddPackage(new MainReactPackage())
+            //#if DEBUG
+            //                    .SetUseDeveloperSupport(false)
+            //#else
+            //                    .SetUseDeveloperSupport(false)
+            //#endif
+            //                    .SetInitialLifecycleState(LifecycleState.Resumed)
+            //            .Build();
+            //            mReactRootView.StartReactApplication(mReactInstanceManager, "MyReactNativeApp", null);
+
+            //            SetContentView(mReactRootView);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -72,9 +77,8 @@ namespace exampleRN
 
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
-            View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (View.IOnClickListener)null).Show();
+
+            SPRMessenger.Shared().StartApplication();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -82,25 +86,6 @@ namespace exampleRN
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
-        [Obsolete]
-        public override void OnBackPressed()
-        {
-            if (mReactInstanceManager != null)
-            {
-                mReactInstanceManager.OnBackPressed();
-            }
-            else
-            {
-                base.OnBackPressed();
-            }
-        }
-
-        [Obsolete]
-        public void InvokeDefaultOnBackPressed()
-        {
-            base.OnBackPressed();
         }
     }
 }

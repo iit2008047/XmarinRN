@@ -68,14 +68,14 @@
     <Reference Include="kotlin">
       <HintPath>Assets\kotlin.dll</HintPath>
     </Reference>
-    <Reference Include="soloader">
-      <HintPath>Assets\soloader.dll</HintPath>
-    </Reference>
     <Reference Include="ReactNative.Droid">
       <HintPath>Assets\ReactNative.Droid.dll</HintPath>
     </Reference>
     <Reference Include="fresco">
       <HintPath>Assets\fresco.dll</HintPath>
+    </Reference>
+    <Reference Include="messengerDll">
+      <HintPath>Assets\messengerDll.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
